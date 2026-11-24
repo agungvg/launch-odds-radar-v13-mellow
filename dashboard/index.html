@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Launch-Odds Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<a class="skip" href="#board">Skip to the board</a>
+<header class="topbar">
+  <div class="brand"><span class="brand-mark">◉</span> LAUNCH-ODDS RADAR <span class="brand-sub">v13-mellow</span></div>
+  <div class="topbar-note">Snapshot 2026-11-14 · refit on every run · model radar-13-mellow</div>
+</header>
+<main id="main">
+  <section class="hero" id="hero" aria-label="Top of the board">
+    <div class="hero-copy">
+      <h1>LAUNCH-ODDS<br>RADAR</h1>
+      <p class="hero-sub">Every pre-token protocol, priced off the size curve — with the odds it ever launches, and a costed farm plan for each one.</p>
+      <p class="hero-line">Implied value = TVL × fitted mcap/TVL. Odds = the peers’ launch record by age. Farm only when the net is positive.</p>
+    </div>
+    <div class="scene" id="scene" aria-label="Top four protocols"></div>
+  </section>
+  <section class="kpis" id="kpis" aria-label="Scorecard"></section>
+  <section class="integrity" id="integrity" aria-label="Integrity strip"></section>
+  <section class="controls" id="controls" aria-label="Farm economics controls">
+    <div class="slider-block">
+      <label for="dep">Deposit <b id="depVal">0.020% of TVL</b></label>
+      <input type="range" id="dep" min="0.005" max="0.1" step="0.001" value="0.02">
+      <div class="slider-note">0.020% of each protocol's TVL</div>
+    </div>
+    <div class="slider-block">
+      <label for="gas">Gas per farm <b id="gasVal">$15</b></label>
+      <input type="range" id="gas" min="5" max="50" step="1" value="15">
+      <div class="slider-note">Cost = gas + 2h × $15/h = <b id="costVal">$45</b></div>
+    </div>
+    <div class="filter-block" id="filters" role="group" aria-label="Verdict filter">
+      <button data-f="all" class="on">All 198</button>
+      <button data-f="Farm">Farm</button>
+      <button data-f="Thin">Thin</button>
+      <button data-f="Skip">Skip</button>
+      <label class="wl"><input type="checkbox" id="wlOnly"> Watchlist only</label>
+    </div>
+  </section>
+  <section class="chart-panel" id="chartPanel" aria-label="Size curve">
+    <div class="chart-head"><h2>Size curve: ratio falls as TVL grows</h2><span class="chart-sub">95 traded protocols · coral = traded · teal = this board · amber ring = watchlist</span></div>
+    <div id="chart"></div>
+  </section>
+  <section class="board-wrap" id="boardWrap">
+    <div class="board-head"><h2 id="boardTitle">The board — 198 pre-token protocols</h2><span id="boardCount"></span></div>
+    <table class="board" id="board">
+      <thead><tr><th>#</th><th>Protocol</th><th>Category</th><th>TVL</th><th>Implied</th><th>P10–P90 range</th><th>Odds</th><th>Deposit</th><th>Net $/h</th><th>Verdict</th></tr></thead>
+      <tbody id="boardBody"></tbody>
+    </table>
+  </section>
+  <section class="notes" id="notes" aria-label="Model notes">
+    <h2>Model notes — the honest test table</h2>
+    <div id="testTable"></div>
+    <h3>Every value term, tested held-out twice</h3>
+    <div id="termTable"></div>
+    <p class="notes-text">The value model is one term only: ridge (λ = 3) of log10(mcap/TVL) on log10(TVL), fitted on the 95 traded protocols with a known listing date and refit from the snapshot on every run. A term enters only when it lowers the held-out miss in <b>both</b> the leave-one-out and the walk-forward tests. Per-category mean ratios are never a feature — a category’s own mean leaks the answer for its members. Odds come from the peers’ cross-sectional record by age, not a forward hazard. Intervals use the leave-one-out residual spread (σ). Farm economics are net only: gross = implied × 5% pool × deposit share × odds; cost = gas + 2h × $15/h. “Miss” here is the geometric-mean miss: 10 to the mean absolute log10 residual, so ×4.36 means typically within a factor of 4.36 either way.</p>
+    <h3>Ledger — all 758 protocols accounted for</h3>
+    <div id="ledger"></div>
+    <h3>Live tokens — the market’s own values, for reference</h3>
+    <div id="liveView"></div>
+  </section>
+  <footer class="foot">Source: DefiLlama protocols snapshot, 2026-11-14. No protocol name is ever special-cased; the same function scores every row. Intervals are wide because the size curve is a rough law, not a price.</footer>
+</main>
+<div class="drawer-backdrop" id="backdrop" hidden></div>
+<aside class="drawer" id="drawer" aria-label="Protocol detail" hidden></aside>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
